@@ -1,31 +1,142 @@
-@echo off
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Twix — Optimiseur PC Ultra-Max</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent1:#7b5cff;
+    --accent2:#00e0a1;
+    --text:#eaf2ff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    overflow:hidden;
+    background: linear-gradient(270deg, #0b1020, #0f2040, #0b1020);
+    background-size: 600% 600%;
+    animation: gradientBG 20s ease infinite;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color: var(--text);
+  }
+  @keyframes gradientBG{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+  .container{
+    max-width:800px; width:100%;
+    padding:40px;
+    border-radius:20px;
+    background: rgba(255,255,255,0.03);
+    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    text-align:center;
+    animation: fadeIn 2s ease;
+  }
+  @keyframes fadeIn{
+    from{opacity:0; transform: translateY(-30px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  h1{
+    font-size:2.2rem;
+    margin-bottom:12px;
+    text-shadow: 0 0 12px var(--accent1), 0 0 20px var(--accent2);
+  }
+  p.lead{
+    font-size:1rem;
+    color:#d6e6ff88;
+    margin-bottom:28px;
+  }
+  .btn{
+    padding:16px 30px;
+    border-radius:50px;
+    font-weight:700;
+    font-size:1rem;
+    text-decoration:none;
+    background: linear-gradient(90deg,var(--accent2),var(--accent1));
+    color:#021;
+    cursor:pointer;
+    box-shadow: 0 0 20px var(--accent1), 0 0 40px var(--accent2);
+    transition: transform .2s, box-shadow .3s;
+  }
+  .btn:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 30px var(--accent1), 0 0 60px var(--accent2);
+  }
+  .feature-list{
+    display:grid; gap:10px;
+    margin-bottom:28px;
+    font-size:14px;
+    text-align:left;
+  }
+  .feature{
+    padding:10px 14px;
+    border-radius:12px;
+    background: rgba(255,255,255,0.02);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    position:relative;
+  }
+  .feature::before{
+    content:"✔";
+    color: var(--accent2);
+    font-weight:bold;
+    position:absolute;
+    left:10px;
+  }
+  .feature span{
+    margin-left:22px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Ultimate Twix — Optimiseur PC Ultra-Max</h1>
+  <p class="lead">Boostez votre PC avec notre script Ultra-Max “premium gratuit”. Nettoyage, réparation, optimisation réseau, RAM, et plan Fibre.</p>
+
+  <div class="feature-list">
+    <div class="feature"><span>Nettoyage fichiers temporaires et cache</span></div>
+    <div class="feature"><span>Vidage corbeille et logs Windows</span></div>
+    <div class="feature"><span>Reset DNS et Winsock</span></div>
+    <div class="feature"><span>SFC / DISM réparation système</span></div>
+    <div class="feature"><span>Plan d’alimentation Fibre (Ultimate Performance)</span></div>
+    <div class="feature"><span>Libération RAM inactive</span></div>
+    <div class="feature"><span>Nettoyage Prefetch et Miniatures</span></div>
+  </div>
+
+  <button class="btn" id="downloadBtn">Télécharger Ultimate Twix .BAT</button>
+</div>
+
+<script>
+document.getElementById('downloadBtn').addEventListener('click', function(){
+const batContent = `@echo off
 title Ultimate Twix Max Pro Optimiser
 color 0A
-echo ===============================
-echo Ultimate Twix Max Pro Optimiser
-echo ===============================
 
-:: Vérification droits admin
 NET SESSION >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [!] Droits administrateur requis. Relancement...
     powershell -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
     exit
 )
 
 echo [1/10] Nettoyage fichiers temporaires...
-del /s /q "%temp%\*.*" 2>nul
-del /s /q "C:\Windows\Temp\*.*" 2>nul
+del /s /q "%temp%\\*.*" 2>nul
+del /s /q "C:\\Windows\\Temp\\*.*" 2>nul
 
 echo [2/10] Nettoyage corbeille...
 PowerShell.exe -NoProfile -Command "Clear-RecycleBin -Force"
 
 echo [3/10] Nettoyage cache Windows Update et Miniatures...
-del /s /q "%windir%\SoftwareDistribution\Download\*.*" 2>nul
-del /s /q "%localappdata%\Microsoft\Windows\Explorer\thumbcache_*.db" 2>nul
+del /s /q "%windir%\\SoftwareDistribution\\Download\\*.*" 2>nul
+del /s /q "%localappdata%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db" 2>nul
 
-echo [4/10] Nettoyage préfetch...
-del /s /q "C:\Windows\Prefetch\*.*" 2>nul
+echo [4/10] Nettoyage Prefetch...
+del /s /q "C:\\Windows\\Prefetch\\*.*" 2>nul
 
 echo [5/10] Réinitialisation réseau...
 ipconfig /flushdns
@@ -36,17 +147,28 @@ echo [6/10] Vérification fichiers système...
 sfc /scannow
 DISM /Online /Cleanup-Image /RestoreHealth
 
-echo [7/10] Activation plan d'alimentation Fibre (Ultimate Performance)...
+echo [7/10] Activation plan d'alimentation Fibre...
 powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
 powercfg -setactive e9a42b02-d5df-448d-aa00-03f14749eb61
 
 echo [8/10] Libération RAM inactive...
-:: Nécessite utilitaire tiers (EmptyStandbyList.exe) ou script PowerShell
 powershell -command "Get-Process | Where-Object {$_.Responding} | ForEach-Object { $_.CloseMainWindow() }"
 
 echo [9/10] Nettoyage logs Windows...
 for /f "tokens=*" %%G in ('wevtutil el') do wevtutil cl "%%G"
 
 echo [10/10] Optimisation terminée !
-echo Redémarrage recommandé pour appliquer certains changements.
-pause
+pause`;
+
+const blob = new Blob([batContent], {type:'text/plain'});
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = "ultimate_twix_max_pro.bat";
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+});
+</script>
+</body>
+</html>
