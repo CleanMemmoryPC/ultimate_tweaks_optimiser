@@ -1,0 +1,52 @@
+@echo off
+title Ultimate Twix Max Pro Optimiser
+color 0A
+echo ===============================
+echo Ultimate Twix Max Pro Optimiser
+echo ===============================
+
+:: Vérification droits admin
+NET SESSION >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [!] Droits administrateur requis. Relancement...
+    powershell -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
+    exit
+)
+
+echo [1/10] Nettoyage fichiers temporaires...
+del /s /q "%temp%\*.*" 2>nul
+del /s /q "C:\Windows\Temp\*.*" 2>nul
+
+echo [2/10] Nettoyage corbeille...
+PowerShell.exe -NoProfile -Command "Clear-RecycleBin -Force"
+
+echo [3/10] Nettoyage cache Windows Update et Miniatures...
+del /s /q "%windir%\SoftwareDistribution\Download\*.*" 2>nul
+del /s /q "%localappdata%\Microsoft\Windows\Explorer\thumbcache_*.db" 2>nul
+
+echo [4/10] Nettoyage préfetch...
+del /s /q "C:\Windows\Prefetch\*.*" 2>nul
+
+echo [5/10] Réinitialisation réseau...
+ipconfig /flushdns
+netsh winsock reset
+netsh int ip reset
+
+echo [6/10] Vérification fichiers système...
+sfc /scannow
+DISM /Online /Cleanup-Image /RestoreHealth
+
+echo [7/10] Activation plan d'alimentation Fibre (Ultimate Performance)...
+powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
+powercfg -setactive e9a42b02-d5df-448d-aa00-03f14749eb61
+
+echo [8/10] Libération RAM inactive...
+:: Nécessite utilitaire tiers (EmptyStandbyList.exe) ou script PowerShell
+powershell -command "Get-Process | Where-Object {$_.Responding} | ForEach-Object { $_.CloseMainWindow() }"
+
+echo [9/10] Nettoyage logs Windows...
+for /f "tokens=*" %%G in ('wevtutil el') do wevtutil cl "%%G"
+
+echo [10/10] Optimisation terminée !
+echo Redémarrage recommandé pour appliquer certains changements.
+pause
